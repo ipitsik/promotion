@@ -1,0 +1,21 @@
+import com.example.ipitsik.entity.Product;
+import com.example.ipitsik.entity.ProductItem;
+import com.example.ipitsik.entity.ShoppingCart;
+
+dialect "mvel"
+
+rule "Total cart discount"
+    when
+        $cart : ShoppingCart(initialCost > 75.0)
+    then
+        $cart.setTotalDiscount(10.0);
+end
+
+rule "Water bottles discount"
+    when
+        $s  : ShoppingCart($productItems : productItems)
+        $pi : ProductItem(product.name == "Water Bottle",
+            quantity >= 2) from $productItems
+    then
+        $pi.setFinalPrice(22.99);
+end
