@@ -1,6 +1,7 @@
 package com.example.ipitsik.service;
 
 import com.example.ipitsik.config.ApplicationConfiguration;
+import com.example.ipitsik.config.ProductsConfiguration;
 import com.example.ipitsik.entity.Product;
 import com.example.ipitsik.entity.ShoppingCart;
 import com.example.ipitsik.service.impl.CheckoutServiceImpl;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = ApplicationConfiguration.class)
+@ContextConfiguration(classes = {ApplicationConfiguration.class, ProductsConfiguration.class})
 public class CheckoutServiceImplTest {
 
     @Autowired
@@ -50,11 +51,11 @@ public class CheckoutServiceImplTest {
         products.add(p3);
 
         // act
-        ShoppingCart shoppingCart = checkoutService.getShoppingCart(products);
+        ShoppingCart shoppingCart = checkoutService.checkoutShoppingCart(products);
 
         // assert
         String expectedPrice = "£103.47";
-        Assert.assertEquals(expectedPrice, shoppingCart.getFinalCost());
+        Assert.assertEquals(expectedPrice, shoppingCart.getFinalPriceInReceipt());
     }
 
     @Test
@@ -67,11 +68,11 @@ public class CheckoutServiceImplTest {
         products.add(p1);
 
         // act
-        ShoppingCart shoppingCart = checkoutService.getShoppingCart(products);
+        ShoppingCart shoppingCart = checkoutService.checkoutShoppingCart(products);
 
         // assert
         String expectedPrice = "£68.97";
-        Assert.assertEquals(expectedPrice, shoppingCart.getFinalCost());
+        Assert.assertEquals(expectedPrice, shoppingCart.getFinalPriceInReceipt());
     }
 
     @Test
@@ -84,10 +85,10 @@ public class CheckoutServiceImplTest {
         products.add(p3);
 
         // act
-        ShoppingCart shoppingCart = checkoutService.getShoppingCart(products);
+        ShoppingCart shoppingCart = checkoutService.checkoutShoppingCart(products);
 
         // assert
         String expectedPrice = "£120.59";
-        Assert.assertEquals(expectedPrice, shoppingCart.getFinalCost());
+        Assert.assertEquals(expectedPrice, shoppingCart.getFinalPriceInReceipt());
     }
 }

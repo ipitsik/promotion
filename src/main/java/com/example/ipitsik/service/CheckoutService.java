@@ -6,5 +6,6 @@ import com.example.ipitsik.entity.ShoppingCart;
 import java.util.List;
 
 public interface CheckoutService {
-    ShoppingCart getShoppingCart(List<Product> products);
+
+    ShoppingCart checkoutShoppingCart(List<Product> products);
 }

@@ -3,17 +3,15 @@ package com.example.ipitsik.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
-public class Product {
+public class CartItem {
 
-    private String id;
-    private String name;
     @JsonIgnore
-    private double price;
-    private String priceReceipt;
+    private double finalPrice;
+    private String finalPriceReceipt;
+    private int quantity;
+    private Product product;
 
 }

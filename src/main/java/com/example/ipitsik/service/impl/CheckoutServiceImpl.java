@@ -3,6 +3,7 @@ package com.example.ipitsik.service.impl;
 import com.example.ipitsik.entity.Product;
 import com.example.ipitsik.entity.ShoppingCart;
 import com.example.ipitsik.service.CheckoutService;
+import com.example.ipitsik.service.ShoppingCartService;
 import lombok.RequiredArgsConstructor;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
@@ -16,8 +17,10 @@ public class CheckoutServiceImpl implements CheckoutService {
 
     private final KieContainer kieContainer;
 
+    private final ShoppingCartService shoppingCartService;
+
     @Override
-    public ShoppingCart getShoppingCart(List<Product> products) {
+    public ShoppingCart checkoutShoppingCart(List<Product> products) {
 
         ShoppingCart shoppingCart = generateShoppingCart(products);
 
@@ -26,17 +29,17 @@ public class CheckoutServiceImpl implements CheckoutService {
         kieSession.fireAllRules();
         kieSession.dispose();
 
-        shoppingCart.calculateFinalCost();
+        shoppingCartService.finalizeShoppingCart(shoppingCart);
 
         return shoppingCart;
     }
 
-    private ShoppingCart generateShoppingCart(List<Product> products){
+    private ShoppingCart generateShoppingCart(List<Product> products) {
 
         ShoppingCart shoppingCart = new ShoppingCart();
 
-        products.forEach(shoppingCart::addProductToShoppingCart);
-        shoppingCart.calculateInitialCost();
+        products.forEach(p -> shoppingCartService.addProductToShoppingCart(shoppingCart, p));
+        shoppingCartService.initializeShoppingCartPrice(shoppingCart);
 
         return shoppingCart;
     }
