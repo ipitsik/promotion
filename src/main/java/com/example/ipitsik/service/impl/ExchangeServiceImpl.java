@@ -34,7 +34,7 @@ public class ExchangeServiceImpl implements ExchangeService {
         if(linkedHashMap == null || linkedHashMap.get(getKey(currency)) == null){
             throw new ExchangeException("Something went wrong with currency exchange");
         } else {
-            return linkedHashMap.get(getKey(currency)).doubleValue();
+            return linkedHashMap.get(getKey(currency));
         }
     }
 
