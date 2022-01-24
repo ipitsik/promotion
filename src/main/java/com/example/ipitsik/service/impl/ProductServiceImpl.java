@@ -3,12 +3,17 @@ package com.example.ipitsik.service.impl;
 import com.example.ipitsik.config.ProductsConfiguration;
 import com.example.ipitsik.controller.model.ProductDTO;
 import com.example.ipitsik.entity.Product;
+import com.example.ipitsik.exception.ExchangeException;
 import com.example.ipitsik.exception.PromotionException;
+import com.example.ipitsik.service.ExchangeService;
 import com.example.ipitsik.service.ProductService;
 import com.example.ipitsik.utils.Constants;
+import com.example.ipitsik.utils.CurrencyEnum;
+import com.example.ipitsik.utils.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +25,8 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
 
     private final ProductsConfiguration productsConfiguration;
+
+    private final ExchangeService exchangeService;
 
     private static Map<String, Product> productHashMap = null;
 
@@ -45,8 +52,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> finalizeProducts(List<Product> products) {
-        products.forEach(this::finalizeProduct);
+    public List<Product> finalizeProducts(List<Product> products, CurrencyEnum currency) throws ExchangeException, URISyntaxException {
+        double exchange = exchangeService.exchange(currency);
+        products.forEach(p -> this.finalizeProduct(p, currency, exchange));
         return products;
     }
 
@@ -58,8 +66,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void finalizeProduct(Product product) {
-        product.setPriceReceipt(Constants.BRITISH_POUND + Constants.DF.format(product.getPrice()));
+    public void finalizeProduct(Product product, CurrencyEnum currency, double exchange) {
+        product.setPriceReceipt(Utils.getCurrencySymbol(currency) + Constants.DF.format(product.getPrice() * exchange));
     }
 
     private void validateProducts(List<String> items) throws PromotionException {

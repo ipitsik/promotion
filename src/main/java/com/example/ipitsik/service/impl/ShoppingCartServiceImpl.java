@@ -6,6 +6,8 @@ import com.example.ipitsik.entity.ShoppingCart;
 import com.example.ipitsik.service.CartItemService;
 import com.example.ipitsik.service.ShoppingCartService;
 import com.example.ipitsik.utils.Constants;
+import com.example.ipitsik.utils.CurrencyEnum;
+import com.example.ipitsik.utils.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -39,17 +41,19 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public void finalizeShoppingCart(ShoppingCart shoppingCart){
+    public void finalizeShoppingCart(ShoppingCart shoppingCart, CurrencyEnum currency, double exchange){
         double finalCost = shoppingCart.getCartItems().stream().mapToDouble(c -> c.getFinalPrice() * c.getQuantity()).sum();
-        shoppingCart.getCartItems().forEach(cartItemService::finalizeItem);
+        shoppingCart.getCartItems().forEach(c -> cartItemService.finalizeItem(c, currency, exchange));
 
         if(shoppingCart.getTotalDiscount() > 0){
             finalCost -= finalCost * shoppingCart.getTotalDiscount() * Constants.PERCENTAGE_MULTIPLE;
         }
 
-        shoppingCart.setInitialPriceInReceipt(Constants.BRITISH_POUND + Constants.DF.format(shoppingCart.getInitialPrice()));
+        shoppingCart.setInitialPriceInReceipt(Utils.getCurrencySymbol(currency) +
+                Constants.DF.format(shoppingCart.getInitialPrice() * exchange));
         shoppingCart.setTotalDiscountInReceipt(shoppingCart.getTotalDiscount() + Constants.PERCENTAGE);
-        shoppingCart.setFinalPriceInReceipt(Constants.BRITISH_POUND + Constants.DF.format(finalCost));
+        shoppingCart.setFinalPriceInReceipt(Utils.getCurrencySymbol(currency) +
+                Constants.DF.format(finalCost * exchange));
     }
 
     @Override

@@ -5,6 +5,8 @@ import com.example.ipitsik.entity.Product;
 import com.example.ipitsik.service.CartItemService;
 import com.example.ipitsik.service.ProductService;
 import com.example.ipitsik.utils.Constants;
+import com.example.ipitsik.utils.CurrencyEnum;
+import com.example.ipitsik.utils.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +22,10 @@ public class CartItemServiceImpl implements CartItemService {
     }
 
     @Override
-    public void finalizeItem(CartItem cartItem) {
-        cartItem.setFinalPriceReceipt(Constants.BRITISH_POUND + Constants.DF.format(cartItem.getFinalPrice()));
-        productService.finalizeProduct(cartItem.getProduct());
+    public void finalizeItem(CartItem cartItem, CurrencyEnum currency, double exchange) {
+        cartItem.setFinalPriceReceipt(Utils.getCurrencySymbol(currency) + Constants.DF.format(cartItem.getFinalPrice()
+                * exchange));
+        productService.finalizeProduct(cartItem.getProduct(), currency, exchange);
     }
 
     @Override

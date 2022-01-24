@@ -4,7 +4,9 @@ import com.example.ipitsik.config.ApplicationConfiguration;
 import com.example.ipitsik.config.ProductsConfiguration;
 import com.example.ipitsik.entity.Product;
 import com.example.ipitsik.entity.ShoppingCart;
+import com.example.ipitsik.exception.ExchangeException;
 import com.example.ipitsik.service.impl.CheckoutServiceImpl;
+import com.example.ipitsik.utils.CurrencyEnum;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +54,12 @@ public class CheckoutServiceImplTest {
         products.add(p3);
 
         // act
-        ShoppingCart shoppingCart = checkoutService.checkoutShoppingCart(products);
+        ShoppingCart shoppingCart = null;
+        try {
+            shoppingCart = checkoutService.checkoutShoppingCart(products, CurrencyEnum.GBP);
+        } catch (URISyntaxException | ExchangeException e) {
+            e.printStackTrace();
+        }
 
         // assert
         String expectedPrice = "£103.47";
@@ -68,7 +76,12 @@ public class CheckoutServiceImplTest {
         products.add(p1);
 
         // act
-        ShoppingCart shoppingCart = checkoutService.checkoutShoppingCart(products);
+        ShoppingCart shoppingCart = null;
+        try {
+            shoppingCart = checkoutService.checkoutShoppingCart(products, CurrencyEnum.GBP);
+        } catch (URISyntaxException | ExchangeException e) {
+            e.printStackTrace();
+        }
 
         // assert
         String expectedPrice = "£68.97";
@@ -85,7 +98,12 @@ public class CheckoutServiceImplTest {
         products.add(p3);
 
         // act
-        ShoppingCart shoppingCart = checkoutService.checkoutShoppingCart(products);
+        ShoppingCart shoppingCart = null;
+        try {
+            shoppingCart = checkoutService.checkoutShoppingCart(products, CurrencyEnum.GBP);
+        } catch (URISyntaxException | ExchangeException e) {
+            e.printStackTrace();
+        }
 
         // assert
         String expectedPrice = "£120.59";

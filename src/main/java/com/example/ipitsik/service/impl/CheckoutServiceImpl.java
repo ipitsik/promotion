@@ -2,13 +2,17 @@ package com.example.ipitsik.service.impl;
 
 import com.example.ipitsik.entity.Product;
 import com.example.ipitsik.entity.ShoppingCart;
+import com.example.ipitsik.exception.ExchangeException;
 import com.example.ipitsik.service.CheckoutService;
+import com.example.ipitsik.service.ExchangeService;
 import com.example.ipitsik.service.ShoppingCartService;
+import com.example.ipitsik.utils.CurrencyEnum;
 import lombok.RequiredArgsConstructor;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 import org.springframework.stereotype.Service;
 
+import java.net.URISyntaxException;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -19,8 +23,10 @@ public class CheckoutServiceImpl implements CheckoutService {
 
     private final ShoppingCartService shoppingCartService;
 
+    private final ExchangeService exchangeService;
+
     @Override
-    public ShoppingCart checkoutShoppingCart(List<Product> products) {
+    public ShoppingCart checkoutShoppingCart(List<Product> products, CurrencyEnum currency) throws URISyntaxException, ExchangeException {
 
         ShoppingCart shoppingCart = generateShoppingCart(products);
 
@@ -29,7 +35,8 @@ public class CheckoutServiceImpl implements CheckoutService {
         kieSession.fireAllRules();
         kieSession.dispose();
 
-        shoppingCartService.finalizeShoppingCart(shoppingCart);
+        shoppingCartService.finalizeShoppingCart(shoppingCart, currency,
+                exchangeService.exchange(currency));
 
         return shoppingCart;
     }
