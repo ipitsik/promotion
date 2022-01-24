@@ -10,7 +10,6 @@ import java.util.List;
 
 @Data
 @Configuration
-@ComponentScan("com.example.ipitsik.service")
 @ConfigurationProperties(prefix = "stock")
 public class ProductsConfiguration {
     List<Product> products;

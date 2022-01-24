@@ -1,7 +1,7 @@
 package com.example.ipitsik.service.impl;
 
 import com.example.ipitsik.config.ProductsConfiguration;
-import com.example.ipitsik.controller.model.ProductDTO;
+import com.example.ipitsik.controller.dto.ProductDTO;
 import com.example.ipitsik.entity.Product;
 import com.example.ipitsik.exception.ExchangeException;
 import com.example.ipitsik.exception.PromotionException;
@@ -13,6 +13,7 @@ import com.example.ipitsik.utils.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,16 +29,18 @@ public class ProductServiceImpl implements ProductService {
 
     private final ExchangeService exchangeService;
 
-    private static Map<String, Product> productHashMap = null;
+    private Map<String, Product> productHashMap;
+
+    @PostConstruct
+    public void init() {
+        this.productHashMap = productsConfiguration
+                .getProducts()
+                .stream()
+                .collect(Collectors.toMap(Product::getId, Function.identity()));
+    }
 
     @Override
     public Map<String, Product> getProductHashMap(){
-        if (productHashMap == null || productHashMap.isEmpty()){
-            productHashMap = productsConfiguration
-                    .getProducts()
-                    .stream()
-                    .collect(Collectors.toMap(Product::getId, Function.identity()));
-        }
         return productHashMap;
     }
 
@@ -71,8 +74,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private void validateProducts(List<String> items) throws PromotionException {
-        for(String item : items){
-            if(!this.getProductHashMap().containsKey(item)){
+        for (String item : items) {
+            if (!this.getProductHashMap().containsKey(item)) {
                 throw new PromotionException("There are products not in stock");
             }
         }

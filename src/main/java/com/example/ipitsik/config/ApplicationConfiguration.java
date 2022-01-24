@@ -11,7 +11,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ComponentScan("com.example.ipitsik.service")
 public class ApplicationConfiguration {
     private static final String PROMOTIONS_DRL = "rules/promotions.drl";
     private static final KieServices kieServices = KieServices.Factory.get();

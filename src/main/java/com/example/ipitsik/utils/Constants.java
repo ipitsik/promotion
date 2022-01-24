@@ -10,7 +10,7 @@ public final class Constants {
 
     public static final double PERCENTAGE_MULTIPLE = 0.01;
 
-    public static final String GBP = "BGP";
+    public static final String GBP = "GBP";
 
     public static final String EUR = "EUR";
 

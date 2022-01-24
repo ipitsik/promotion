@@ -21,9 +21,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void addProductToShoppingCart(ShoppingCart shoppingCart, Product product) {
-        if(shoppingCart.getCartItems() == null){
+        if (shoppingCart.getCartItems() == null) {
             shoppingCart.setCartItems(new ArrayList<>());
-        } else if(this.containsProduct(shoppingCart, product)){
+        } else if (this.containsProduct(shoppingCart, product)) {
             shoppingCart.getCartItems()
                 .stream()
                 .filter(c -> c.getProduct().equals(product))
@@ -61,8 +61,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return shoppingCart.getCartItems()
                 .stream()
                 .map(CartItem::getProduct)
-                .filter(product::equals)
-                .findFirst().
-                isPresent();
+                .anyMatch(product::equals);
     }
 }

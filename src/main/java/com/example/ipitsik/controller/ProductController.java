@@ -6,7 +6,7 @@ import com.example.ipitsik.exception.ExchangeException;
 import com.example.ipitsik.service.ProductService;
 import com.example.ipitsik.utils.CurrencyEnum;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,23 +16,19 @@ import org.springframework.web.bind.annotation.RestController;
 import java.net.URISyntaxException;
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/products")
 public class ProductController {
 
     private final ProductService productService;
 
     private final ProductsConfiguration productsConfiguration;
 
-    @GetMapping("/getProducts")
-    public ResponseEntity<List<Product>> getProducts(@RequestParam(value = "currency") CurrencyEnum currency) {
-        try {
-            return new ResponseEntity(productService.finalizeProducts(productsConfiguration.getProducts(),
-                    currency), HttpStatus.OK);
-        } catch (ExchangeException | URISyntaxException e) {
-            e.printStackTrace();
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    @GetMapping
+    public ResponseEntity<List<Product>> getProducts(@RequestParam(value = "currency") CurrencyEnum currency)
+            throws ExchangeException, URISyntaxException {
+        return ResponseEntity.ok(productService.finalizeProducts(productsConfiguration.getProducts(), currency));
     }
 }

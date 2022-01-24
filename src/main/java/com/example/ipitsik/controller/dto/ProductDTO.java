@@ -1,4 +1,4 @@
-package com.example.ipitsik.controller.model;
+package com.example.ipitsik.controller.dto;
 
 import lombok.Data;
 
