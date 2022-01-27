@@ -64,7 +64,8 @@ public class ProductServiceImpl implements ProductService {
     private void validateProducts(List<ProductDTO> products) throws PromotionException {
         for(ProductDTO product:products){
             if(products.stream().filter(p -> p.getId().equals(product.getId()))
-                    .anyMatch(p -> !p.getName().equals(product.getName()) || p.getPrice()!=product.getPrice())){
+                    .anyMatch(p -> !p.getName().equals(product.getName()) || p.getPrice()!=product.getPrice())
+                || productHashMap.containsKey(product.getId())){
                 throw new PromotionException("Products are wrong");
             }
         }

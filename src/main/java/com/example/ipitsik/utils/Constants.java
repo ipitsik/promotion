@@ -16,6 +16,8 @@ public final class Constants {
 
     public static final String USD_SYMBOL = "$";
 
+    public static final String JPY_SYMBOL = "¥";
+
     public static final String COMPACT = "compact";
 
     public static final String API_KEY = "apiKey";

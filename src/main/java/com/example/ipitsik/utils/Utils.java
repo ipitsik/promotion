@@ -6,9 +6,9 @@ public final class Utils {
         switch (currency){
             case USD: return Constants.USD_SYMBOL;
             case EUR: return Constants.EUR_SYMBOL;
+            case JPY: return Constants.JPY_SYMBOL;
             default:
             case GBP: return Constants.GBP_SYMBOL;
         }
-
     }
 }
