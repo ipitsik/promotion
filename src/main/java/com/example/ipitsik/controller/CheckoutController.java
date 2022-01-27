@@ -26,7 +26,7 @@ public class CheckoutController {
     public ResponseEntity<ReceiptDTO> checkoutShoppingCartByProducts(@RequestBody List<ProductDTO> products,
                                                                      @RequestParam(value = "fromCurrency") CurrencyEnum fromCurrency,
                                                                      @RequestParam(value = "toCurrency") CurrencyEnum toCurrency)
-            throws ExchangeException, URISyntaxException {
+            throws ExchangeException, URISyntaxException, PromotionException {
         return ResponseEntity.ok(checkoutService.checkoutShoppingCartListProducts(products, fromCurrency, toCurrency));
     }
 

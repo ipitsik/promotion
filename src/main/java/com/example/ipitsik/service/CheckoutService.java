@@ -12,7 +12,7 @@ import java.util.List;
 public interface CheckoutService {
 
     ReceiptDTO checkoutShoppingCartListProducts(List<ProductDTO> products, CurrencyEnum fromCurrency,
-                                                CurrencyEnum toCurrency) throws ExchangeException, URISyntaxException;
+                                                CurrencyEnum toCurrency) throws ExchangeException, URISyntaxException, PromotionException;
 
     ReceiptDTO checkoutShoppingCartListItems(List<String> items, CurrencyEnum currency) throws PromotionException, ExchangeException, URISyntaxException;
 

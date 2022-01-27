@@ -10,5 +10,5 @@ public interface ProductService {
 
     List<Product> generateProductsFromItems(List<String> items) throws PromotionException;
 
-    List<Product> transformProducts(List<ProductDTO> products);
+    List<Product> transformProducts(List<ProductDTO> products) throws PromotionException;
 }

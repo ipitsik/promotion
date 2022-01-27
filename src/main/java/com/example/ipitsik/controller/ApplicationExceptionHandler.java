@@ -17,7 +17,7 @@ public class ApplicationExceptionHandler {
     @ExceptionHandler(PromotionException.class)
     public ResponseEntity<Object> handlePromotionException(PromotionException exception) {
         log.error(exception.toString());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     @ExceptionHandler(ExchangeException.class)

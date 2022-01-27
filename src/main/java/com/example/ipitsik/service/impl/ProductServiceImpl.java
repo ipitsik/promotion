@@ -34,7 +34,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> generateProductsFromItems(List<String> items) throws PromotionException {
 
-        this.validateProducts(items);
+        this.validateItems(items);
 
         return items.stream()
                 .map(i -> this.getProductHashMap().get(i))
@@ -42,7 +42,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> transformProducts(List<ProductDTO> products) {
+    public List<Product> transformProducts(List<ProductDTO> products) throws PromotionException {
+        this.validateProducts(products);
         List<Product> productList = new ArrayList<>();
         products.forEach(p -> productList.add(new Product(p.getId(), p.getName(), p.getPrice())));
         return productList;
@@ -52,10 +53,19 @@ public class ProductServiceImpl implements ProductService {
         return productHashMap;
     }
 
-    private void validateProducts(List<String> items) throws PromotionException {
+    private void validateItems(List<String> items) throws PromotionException {
         for (String item : items) {
             if (!this.getProductHashMap().containsKey(item)) {
                 throw new PromotionException("There are products not in stock");
+            }
+        }
+    }
+
+    private void validateProducts(List<ProductDTO> products) throws PromotionException {
+        for(ProductDTO product:products){
+            if(products.stream().filter(p -> p.getId().equals(product.getId()))
+                    .anyMatch(p -> !p.getName().equals(product.getName()) || p.getPrice()!=product.getPrice())){
+                throw new PromotionException("Products are wrong");
             }
         }
     }
