@@ -24,14 +24,14 @@ public class CheckoutController {
 
     @PostMapping("/byProducts")
     public ResponseEntity<ReceiptDTO> checkoutShoppingCartByProducts(@RequestBody List<ProductDTO> products,
-                                                                     @RequestBody CurrencyEnum currency)
+                                                                     @RequestParam(value = "currency") CurrencyEnum currency)
             throws ExchangeException, URISyntaxException {
         return ResponseEntity.ok(checkoutService.checkoutShoppingCartListProducts(products, currency));
     }
 
     @PostMapping("/byItems")
     public ResponseEntity<ReceiptDTO> checkoutShoppingCartByItems(@RequestBody List<String> items,
-                                                                    @RequestBody CurrencyEnum currency)
+                                                                  @RequestParam(value = "currency") CurrencyEnum currency)
             throws PromotionException, ExchangeException, URISyntaxException {
         return ResponseEntity.ok(checkoutService.checkoutShoppingCartListItems(items, currency));
     }
