@@ -8,6 +8,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConfigurationProperties(prefix = "exchange")
 public class ExchangeConfiguration {
-    private String converterUrl;
+    private String requestUrl;
+    private String compact;
+    private String apiKey;
+    private String q;
     private boolean enabled;
 }

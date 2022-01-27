@@ -22,4 +22,17 @@ public final class Constants {
 
     public static final String USD_SYMBOL = "$";
 
+    public static final String CONVERTER_URL = "converterUrl";
+
+    public static final String COMPACT = "compact";
+
+    public static final String API_KEY = "apiKey";
+
+    public static final String QUERY = "q";
+
+    public static final String HTTP_REQUEST_SEPARATOR = "?";
+
+    public static final String HTTP_PARAMS_SEPARATOR = "&";
+
+    public static final String EQUALS = "=";
 }

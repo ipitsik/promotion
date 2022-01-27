@@ -21,5 +21,8 @@ stock:
       price: 3.99
 
 exchange:
-  converterUrl: https://free.currconv.com/api/v7/convert?compact=ultra&apiKey=e0af0a90b8051f3b50b8&q=GBP_EUR,GBP_USD
+  requestUrl: https://free.currconv.com/api/v7/convert
+  compact: ultra
+  apiKey: e0af0a90b8051f3b50b8
+  q: GBP_EUR,GBP_USD
   enabled: true

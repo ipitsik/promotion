@@ -3,18 +3,12 @@ package com.example.ipitsik.service.impl;
 import com.example.ipitsik.config.ProductsConfiguration;
 import com.example.ipitsik.controller.dto.ProductDTO;
 import com.example.ipitsik.entity.Product;
-import com.example.ipitsik.exception.ExchangeException;
 import com.example.ipitsik.exception.PromotionException;
-import com.example.ipitsik.service.ExchangeService;
 import com.example.ipitsik.service.ProductService;
-import com.example.ipitsik.utils.Constants;
-import com.example.ipitsik.utils.CurrencyEnum;
-import com.example.ipitsik.utils.Utils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,8 +21,6 @@ public class ProductServiceImpl implements ProductService {
 
     private final ProductsConfiguration productsConfiguration;
 
-    private final ExchangeService exchangeService;
-
     private Map<String, Product> productHashMap;
 
     @PostConstruct
@@ -37,11 +29,6 @@ public class ProductServiceImpl implements ProductService {
                 .getProducts()
                 .stream()
                 .collect(Collectors.toMap(Product::getId, Function.identity()));
-    }
-
-    @Override
-    public Map<String, Product> getProductHashMap(){
-        return productHashMap;
     }
 
     @Override
@@ -55,22 +42,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<Product> finalizeProducts(List<Product> products, CurrencyEnum currency) throws ExchangeException, URISyntaxException {
-        double exchange = exchangeService.exchange(currency);
-        products.forEach(p -> this.finalizeProduct(p, currency, exchange));
-        return products;
-    }
-
-    @Override
     public List<Product> transformProducts(List<ProductDTO> products) {
         List<Product> productList = new ArrayList<>();
-        products.forEach(p -> productList.add(new Product(p.getId(), p.getName(), p.getPrice(), null)));
+        products.forEach(p -> productList.add(new Product(p.getId(), p.getName(), p.getPrice())));
         return productList;
     }
 
-    @Override
-    public void finalizeProduct(Product product, CurrencyEnum currency, double exchange) {
-        product.setPriceReceipt(Utils.getCurrencySymbol(currency) + Constants.DF.format(product.getPrice() * exchange));
+    private Map<String, Product> getProductHashMap(){
+        return productHashMap;
     }
 
     private void validateProducts(List<String> items) throws PromotionException {

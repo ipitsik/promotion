@@ -1,11 +1,10 @@
 package com.example.ipitsik.controller;
 
 import com.example.ipitsik.controller.dto.ProductDTO;
-import com.example.ipitsik.entity.ShoppingCart;
+import com.example.ipitsik.controller.dto.ReceiptDTO;
 import com.example.ipitsik.exception.ExchangeException;
 import com.example.ipitsik.exception.PromotionException;
 import com.example.ipitsik.service.CheckoutService;
-import com.example.ipitsik.service.ProductService;
 import com.example.ipitsik.utils.CurrencyEnum;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,26 +22,24 @@ public class CheckoutController {
 
     private final CheckoutService checkoutService;
 
-    private final ProductService productService;
-
     @PostMapping("/byProducts")
-    public ResponseEntity<ShoppingCart> checkoutShoppingCartByProducts(@RequestBody List<ProductDTO> products,
-                                                                       @RequestBody CurrencyEnum currency)
+    public ResponseEntity<ReceiptDTO> checkoutShoppingCartByProducts(@RequestBody List<ProductDTO> products,
+                                                                     @RequestBody CurrencyEnum currency)
             throws ExchangeException, URISyntaxException {
-        return ResponseEntity.ok(checkoutService.checkoutShoppingCart(productService.transformProducts(products), currency));
+        return ResponseEntity.ok(checkoutService.checkoutShoppingCartListProducts(products, currency));
     }
 
     @PostMapping("/byItems")
-    public ResponseEntity<ShoppingCart> checkoutShoppingCartByItems(@RequestBody List<String> items,
+    public ResponseEntity<ReceiptDTO> checkoutShoppingCartByItems(@RequestBody List<String> items,
                                                                     @RequestBody CurrencyEnum currency)
             throws PromotionException, ExchangeException, URISyntaxException {
-        return ResponseEntity.ok(checkoutService.checkoutShoppingCart(productService.generateProductsFromItems(items), currency));
+        return ResponseEntity.ok(checkoutService.checkoutShoppingCartListItems(items, currency));
     }
 
     @GetMapping("/byItemsInRequest")
-    public ResponseEntity<ShoppingCart> checkoutShoppingCartByItemsInRequest(@RequestParam(value = "items") List<String> items,
+    public ResponseEntity<ReceiptDTO> checkoutShoppingCartByItemsInRequest(@RequestParam(value = "items") List<String> items,
                                                                              @RequestParam(value = "currency") CurrencyEnum currency)
             throws PromotionException, ExchangeException, URISyntaxException {
-        return ResponseEntity.ok(checkoutService.checkoutShoppingCart(productService.generateProductsFromItems(items), currency));
+        return ResponseEntity.ok(checkoutService.checkoutShoppingCartListItems(items, currency));
     }
 }

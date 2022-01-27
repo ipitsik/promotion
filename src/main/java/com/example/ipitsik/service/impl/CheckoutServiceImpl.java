@@ -1,10 +1,14 @@
 package com.example.ipitsik.service.impl;
 
+import com.example.ipitsik.controller.dto.ProductDTO;
+import com.example.ipitsik.controller.dto.ReceiptDTO;
 import com.example.ipitsik.entity.Product;
 import com.example.ipitsik.entity.ShoppingCart;
 import com.example.ipitsik.exception.ExchangeException;
+import com.example.ipitsik.exception.PromotionException;
 import com.example.ipitsik.service.CheckoutService;
-import com.example.ipitsik.service.ExchangeService;
+import com.example.ipitsik.service.ProductService;
+import com.example.ipitsik.service.ReceiptGenerator;
 import com.example.ipitsik.service.ShoppingCartService;
 import com.example.ipitsik.utils.CurrencyEnum;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +27,25 @@ public class CheckoutServiceImpl implements CheckoutService {
 
     private final ShoppingCartService shoppingCartService;
 
-    private final ExchangeService exchangeService;
+    private final ProductService productService;
+
+    private final ReceiptGenerator receiptGenerator;
 
     @Override
-    public ShoppingCart checkoutShoppingCart(List<Product> products, CurrencyEnum currency) throws URISyntaxException, ExchangeException {
+    public ReceiptDTO checkoutShoppingCartListProducts(List<ProductDTO> products, CurrencyEnum currency) throws ExchangeException, URISyntaxException {
+
+        return this.checkoutShoppingCart(productService.transformProducts(products), currency);
+
+    }
+
+    @Override
+    public ReceiptDTO checkoutShoppingCartListItems(List<String> items, CurrencyEnum currency) throws PromotionException, ExchangeException, URISyntaxException {
+
+        return this.checkoutShoppingCart(productService.generateProductsFromItems(items), currency);
+
+    }
+
+    private ReceiptDTO checkoutShoppingCart(List<Product> products, CurrencyEnum currency) throws ExchangeException, URISyntaxException {
 
         ShoppingCart shoppingCart = generateShoppingCart(products);
 
@@ -35,10 +54,9 @@ public class CheckoutServiceImpl implements CheckoutService {
         kieSession.fireAllRules();
         kieSession.dispose();
 
-        shoppingCartService.finalizeShoppingCart(shoppingCart, currency,
-                exchangeService.exchange(currency));
+        shoppingCartService.finalizeShoppingCart(shoppingCart);
 
-        return shoppingCart;
+        return receiptGenerator.generateReceipt(shoppingCart, currency);
     }
 
     private ShoppingCart generateShoppingCart(List<Product> products) {
