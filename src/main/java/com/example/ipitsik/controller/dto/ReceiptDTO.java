@@ -13,5 +13,6 @@ public class ReceiptDTO {
     private String initialPrice;
     private String totalDiscount;
     private String finalPrice;
+    private String message;
 
 }

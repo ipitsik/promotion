@@ -43,6 +43,15 @@ public class ReceiptGeneratorImpl implements ReceiptGenerator {
                         Constants.DF.format(shoppingCart.getInitialPrice() * exchange),
                 shoppingCart.getTotalDiscount() + Constants.PERCENTAGE,
                 Utils.getCurrencySymbol(toCurrency) +
-                        Constants.DF.format(shoppingCart.getFinalPrice() * exchange));
+                        Constants.DF.format(shoppingCart.getFinalPrice() * exchange),
+                generateMessage(fromCurrency, toCurrency, exchange));
+    }
+
+    private String generateMessage(CurrencyEnum fromCurrency, CurrencyEnum toCurrency, double exchange) {
+        if(!fromCurrency.equals(toCurrency)){
+            return "1 " + fromCurrency + " equals " + exchange + " " + toCurrency;
+        } else {
+            return "No currency exchange needed";
+        }
     }
 }
