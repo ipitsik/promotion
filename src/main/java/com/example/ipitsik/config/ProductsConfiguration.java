@@ -11,5 +11,6 @@ import java.util.List;
 @Configuration
 @ConfigurationProperties(prefix = "stock")
 public class ProductsConfiguration {
-    List<Product> products;
+    private List<Product> products;
+    private String currency;
 }

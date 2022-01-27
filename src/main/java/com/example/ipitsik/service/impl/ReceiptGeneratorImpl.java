@@ -24,25 +24,25 @@ public class ReceiptGeneratorImpl implements ReceiptGenerator {
     private final ExchangeService exchangeService;
 
     @Override
-    public ReceiptDTO generateReceipt(ShoppingCart shoppingCart, CurrencyEnum currency) throws ExchangeException, URISyntaxException {
+    public ReceiptDTO generateReceipt(ShoppingCart shoppingCart, CurrencyEnum fromCurrency, CurrencyEnum toCurrency) throws ExchangeException, URISyntaxException {
 
-        double exchange = exchangeService.exchange(currency);
+        double exchange = exchangeService.exchange(fromCurrency, toCurrency);
 
         List<CartItemDTO> cartItemDTOList = shoppingCart.getCartItems()
                 .stream()
-                .map(c -> new CartItemDTO(Utils.getCurrencySymbol(currency) +
+                .map(c -> new CartItemDTO(Utils.getCurrencySymbol(toCurrency) +
                         Constants.DF.format(c.getFinalPrice()* exchange),
                         c.getQuantity(),
                         new ProductReceiptDTO(c.getProduct().getId(), c.getProduct().getName(),
-                                Utils.getCurrencySymbol(currency) +
+                                Utils.getCurrencySymbol(toCurrency) +
                                         Constants.DF.format(c.getProduct().getPrice() * exchange) )))
                 .collect(Collectors.toList());
 
         return new ReceiptDTO(cartItemDTOList,
-                Utils.getCurrencySymbol(currency) +
+                Utils.getCurrencySymbol(toCurrency) +
                         Constants.DF.format(shoppingCart.getInitialPrice() * exchange),
                 shoppingCart.getTotalDiscount() + Constants.PERCENTAGE,
-                Utils.getCurrencySymbol(currency) +
+                Utils.getCurrencySymbol(toCurrency) +
                         Constants.DF.format(shoppingCart.getFinalPrice() * exchange));
     }
 }

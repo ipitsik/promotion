@@ -11,7 +11,8 @@ import java.util.List;
 
 public interface CheckoutService {
 
-    ReceiptDTO checkoutShoppingCartListProducts(List<ProductDTO> products, CurrencyEnum currency) throws ExchangeException, URISyntaxException;
+    ReceiptDTO checkoutShoppingCartListProducts(List<ProductDTO> products, CurrencyEnum fromCurrency,
+                                                CurrencyEnum toCurrency) throws ExchangeException, URISyntaxException;
 
     ReceiptDTO checkoutShoppingCartListItems(List<String> items, CurrencyEnum currency) throws PromotionException, ExchangeException, URISyntaxException;
 

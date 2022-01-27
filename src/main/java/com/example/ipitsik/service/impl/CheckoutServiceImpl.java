@@ -1,5 +1,6 @@
 package com.example.ipitsik.service.impl;
 
+import com.example.ipitsik.config.ProductsConfiguration;
 import com.example.ipitsik.controller.dto.ProductDTO;
 import com.example.ipitsik.controller.dto.ReceiptDTO;
 import com.example.ipitsik.entity.Product;
@@ -31,21 +32,25 @@ public class CheckoutServiceImpl implements CheckoutService {
 
     private final ReceiptGenerator receiptGenerator;
 
-    @Override
-    public ReceiptDTO checkoutShoppingCartListProducts(List<ProductDTO> products, CurrencyEnum currency) throws ExchangeException, URISyntaxException {
+    private final ProductsConfiguration productsConfiguration;
 
-        return this.checkoutShoppingCart(productService.transformProducts(products), currency);
+    @Override
+    public ReceiptDTO checkoutShoppingCartListProducts(List<ProductDTO> products, CurrencyEnum fromCurrency,
+                                                       CurrencyEnum toCurrency) throws ExchangeException, URISyntaxException {
+
+        return this.checkoutShoppingCart(productService.transformProducts(products), fromCurrency, toCurrency);
 
     }
 
     @Override
-    public ReceiptDTO checkoutShoppingCartListItems(List<String> items, CurrencyEnum currency) throws PromotionException, ExchangeException, URISyntaxException {
+    public ReceiptDTO checkoutShoppingCartListItems(List<String> items, CurrencyEnum toCurrency) throws PromotionException, ExchangeException, URISyntaxException {
 
-        return this.checkoutShoppingCart(productService.generateProductsFromItems(items), currency);
+        return this.checkoutShoppingCart(productService.generateProductsFromItems(items),
+                CurrencyEnum.valueOf(productsConfiguration.getCurrency()), toCurrency);
 
     }
 
-    private ReceiptDTO checkoutShoppingCart(List<Product> products, CurrencyEnum currency) throws ExchangeException, URISyntaxException {
+    private ReceiptDTO checkoutShoppingCart(List<Product> products, CurrencyEnum fromCurrency, CurrencyEnum toCurrency) throws ExchangeException, URISyntaxException {
 
         ShoppingCart shoppingCart = generateShoppingCart(products);
 
@@ -56,7 +61,7 @@ public class CheckoutServiceImpl implements CheckoutService {
 
         shoppingCartService.finalizeShoppingCart(shoppingCart);
 
-        return receiptGenerator.generateReceipt(shoppingCart, currency);
+        return receiptGenerator.generateReceipt(shoppingCart, fromCurrency, toCurrency);
     }
 
     private ShoppingCart generateShoppingCart(List<Product> products) {

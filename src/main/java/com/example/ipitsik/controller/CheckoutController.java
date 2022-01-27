@@ -24,22 +24,23 @@ public class CheckoutController {
 
     @PostMapping("/byProducts")
     public ResponseEntity<ReceiptDTO> checkoutShoppingCartByProducts(@RequestBody List<ProductDTO> products,
-                                                                     @RequestParam(value = "currency") CurrencyEnum currency)
+                                                                     @RequestParam(value = "fromCurrency") CurrencyEnum fromCurrency,
+                                                                     @RequestParam(value = "toCurrency") CurrencyEnum toCurrency)
             throws ExchangeException, URISyntaxException {
-        return ResponseEntity.ok(checkoutService.checkoutShoppingCartListProducts(products, currency));
+        return ResponseEntity.ok(checkoutService.checkoutShoppingCartListProducts(products, fromCurrency, toCurrency));
     }
 
     @PostMapping("/byItems")
     public ResponseEntity<ReceiptDTO> checkoutShoppingCartByItems(@RequestBody List<String> items,
-                                                                  @RequestParam(value = "currency") CurrencyEnum currency)
+                                                                  @RequestParam(value = "toCurrency") CurrencyEnum toCurrency)
             throws PromotionException, ExchangeException, URISyntaxException {
-        return ResponseEntity.ok(checkoutService.checkoutShoppingCartListItems(items, currency));
+        return ResponseEntity.ok(checkoutService.checkoutShoppingCartListItems(items, toCurrency));
     }
 
     @GetMapping("/byItemsInRequest")
     public ResponseEntity<ReceiptDTO> checkoutShoppingCartByItemsInRequest(@RequestParam(value = "items") List<String> items,
-                                                                             @RequestParam(value = "currency") CurrencyEnum currency)
+                                                                             @RequestParam(value = "toCurrency") CurrencyEnum toCurrency)
             throws PromotionException, ExchangeException, URISyntaxException {
-        return ResponseEntity.ok(checkoutService.checkoutShoppingCartListItems(items, currency));
+        return ResponseEntity.ok(checkoutService.checkoutShoppingCartListItems(items, toCurrency));
     }
 }

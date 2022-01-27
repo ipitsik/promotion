@@ -10,19 +10,11 @@ public final class Constants {
 
     public static final double PERCENTAGE_MULTIPLE = 0.01;
 
-    public static final String GBP = "GBP";
-
-    public static final String EUR = "EUR";
-
-    public static final String USD = "USD";
-
     public static final String GBP_SYMBOL = "£";
 
     public static final String EUR_SYMBOL = "€";
 
     public static final String USD_SYMBOL = "$";
-
-    public static final String CONVERTER_URL = "converterUrl";
 
     public static final String COMPACT = "compact";
 

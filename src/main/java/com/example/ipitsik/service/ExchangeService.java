@@ -6,5 +6,5 @@ import com.example.ipitsik.utils.CurrencyEnum;
 import java.net.URISyntaxException;
 
 public interface ExchangeService {
-    double exchange(CurrencyEnum currency) throws URISyntaxException, ExchangeException;
+    double exchange(CurrencyEnum fromCurrency, CurrencyEnum toCurrency) throws URISyntaxException, ExchangeException;
 }

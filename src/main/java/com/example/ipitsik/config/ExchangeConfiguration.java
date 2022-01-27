@@ -11,6 +11,5 @@ public class ExchangeConfiguration {
     private String requestUrl;
     private String compact;
     private String apiKey;
-    private String q;
     private boolean enabled;
 }
