@@ -38,7 +38,7 @@ public class CheckoutServiceImpl implements CheckoutService {
     public ReceiptDTO checkoutShoppingCartListProducts(List<ProductDTO> products, CurrencyEnum fromCurrency,
                                                        CurrencyEnum toCurrency) throws ExchangeException, URISyntaxException, PromotionException {
 
-        return this.checkoutShoppingCart(productService.transformProducts(products), fromCurrency, toCurrency);
+        return this.checkoutShoppingCart(productService.transformProducts(products, fromCurrency), fromCurrency, toCurrency);
 
     }
 
