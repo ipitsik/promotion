@@ -29,12 +29,12 @@ public class ExchangeServiceImpl implements ExchangeService {
         if (!exchangeConfiguration.isEnabled()) {
             throw new ExchangeException("Exchange Service is not enabled");
         }
-        LinkedHashMap<String, Double> linkedHashMap = restTemplate
+        LinkedHashMap linkedHashMap = restTemplate
                 .getForObject(new URI(generateUrl(fromCurrency, toCurrency)), LinkedHashMap.class);
         if (linkedHashMap == null || linkedHashMap.get(getKeyConvert(fromCurrency, toCurrency)) == null) {
             throw new ExchangeException("Something went wrong with currency exchange");
         } else {
-            return linkedHashMap.get(getKeyConvert(fromCurrency, toCurrency));
+            return (double) linkedHashMap.get(getKeyConvert(fromCurrency, toCurrency));
         }
     }
 

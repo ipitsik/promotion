@@ -30,8 +30,7 @@ class ExchangeServiceImplIOTest {
         String REQUEST_URL = "https://free.currconv.com/api/v7/convert?compact=ultra&apiKey=e0af0a90b8051f3b50b8&q=GBP_EUR";
 
         // act
-        LinkedHashMap<String, Double> linkedHashMap = restTemplate
-                .getForObject(new URI(REQUEST_URL), LinkedHashMap.class);
+        LinkedHashMap linkedHashMap = restTemplate.getForObject(new URI(REQUEST_URL), LinkedHashMap.class);
 
         // assert
         Assertions.assertNotNull(linkedHashMap);
