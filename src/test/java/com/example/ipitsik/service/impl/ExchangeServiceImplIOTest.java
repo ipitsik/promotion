@@ -34,6 +34,7 @@ class ExchangeServiceImplIOTest {
                 .getForObject(new URI(REQUEST_URL), LinkedHashMap.class);
 
         // assert
+        Assertions.assertNotNull(linkedHashMap);
         Assertions.assertNotNull(linkedHashMap.get("GBP_EUR"));
     }
 }
