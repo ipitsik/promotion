@@ -1,8 +1,8 @@
 package com.example.ipitsik.exception;
 
-public class ExchangeException extends Exception{
+public class ExchangeException extends Exception {
 
-    public ExchangeException(String errorMessage){
+    public ExchangeException(String errorMessage) {
         super(errorMessage);
     }
 }

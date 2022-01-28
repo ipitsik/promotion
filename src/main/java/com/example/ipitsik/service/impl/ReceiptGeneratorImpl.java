@@ -31,11 +31,11 @@ public class ReceiptGeneratorImpl implements ReceiptGenerator {
         List<CartItemDTO> cartItemDTOList = shoppingCart.getCartItems()
                 .stream()
                 .map(c -> new CartItemDTO(Utils.getCurrencySymbol(toCurrency) +
-                        Constants.DF.format(c.getFinalPrice()* exchange),
+                        Constants.DF.format(c.getFinalPrice() * exchange),
                         c.getQuantity(),
                         new ProductReceiptDTO(c.getProduct().getId(), c.getProduct().getName(),
                                 Utils.getCurrencySymbol(toCurrency) +
-                                        Constants.DF.format(c.getProduct().getPrice() * exchange) )))
+                                        Constants.DF.format(c.getProduct().getPrice() * exchange))))
                 .collect(Collectors.toList());
 
         return new ReceiptDTO(cartItemDTOList,
@@ -48,7 +48,7 @@ public class ReceiptGeneratorImpl implements ReceiptGenerator {
     }
 
     private String generateMessage(CurrencyEnum fromCurrency, CurrencyEnum toCurrency, double exchange) {
-        if(!fromCurrency.equals(toCurrency)){
+        if (!fromCurrency.equals(toCurrency)) {
             return "1 " + fromCurrency + " equals " + exchange + " " + toCurrency;
         } else {
             return "No currency exchange needed";

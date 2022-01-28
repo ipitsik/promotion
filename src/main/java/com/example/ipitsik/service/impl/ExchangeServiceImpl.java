@@ -23,23 +23,22 @@ public class ExchangeServiceImpl implements ExchangeService {
 
     @Override
     public double exchange(CurrencyEnum fromCurrency, CurrencyEnum toCurrency) throws URISyntaxException, ExchangeException {
-        if(fromCurrency.equals(toCurrency)){
+        if (fromCurrency.equals(toCurrency)) {
             return 1;
         }
-        if(!exchangeConfiguration.isEnabled()){
+        if (!exchangeConfiguration.isEnabled()) {
             throw new ExchangeException("Exchange Service is not enabled");
         }
         LinkedHashMap<String, Double> linkedHashMap = restTemplate
-                .getForObject(new URI(generateUrl(fromCurrency, toCurrency)),
-                LinkedHashMap.class);
-        if(linkedHashMap == null || linkedHashMap.get(getKeyConvert(fromCurrency, toCurrency)) == null){
+                .getForObject(new URI(generateUrl(fromCurrency, toCurrency)), LinkedHashMap.class);
+        if (linkedHashMap == null || linkedHashMap.get(getKeyConvert(fromCurrency, toCurrency)) == null) {
             throw new ExchangeException("Something went wrong with currency exchange");
         } else {
             return linkedHashMap.get(getKeyConvert(fromCurrency, toCurrency));
         }
     }
 
-    private String generateUrl(CurrencyEnum fromCurrency, CurrencyEnum toCurrency){
+    private String generateUrl(CurrencyEnum fromCurrency, CurrencyEnum toCurrency) {
         return exchangeConfiguration.getRequestUrl() +
                 Constants.HTTP_REQUEST_SEPARATOR +
                 Constants.COMPACT + Constants.EQUALS + exchangeConfiguration.getCompact() +
@@ -49,7 +48,7 @@ public class ExchangeServiceImpl implements ExchangeService {
                 Constants.QUERY + Constants.EQUALS + getKeyConvert(fromCurrency, toCurrency);
     }
 
-    private String getKeyConvert(CurrencyEnum fromCurrency, CurrencyEnum toCurrency){
+    private String getKeyConvert(CurrencyEnum fromCurrency, CurrencyEnum toCurrency) {
         return fromCurrency.toString() + "_" + toCurrency.toString();
     }
 }

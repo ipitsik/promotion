@@ -8,5 +8,7 @@ import com.example.ipitsik.utils.CurrencyEnum;
 import java.net.URISyntaxException;
 
 public interface ReceiptGenerator {
+
     ReceiptDTO generateReceipt(ShoppingCart shoppingCart, CurrencyEnum fromCurrency, CurrencyEnum toCurrency) throws ExchangeException, URISyntaxException;
+
 }

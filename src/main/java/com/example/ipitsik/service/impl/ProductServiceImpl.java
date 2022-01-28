@@ -50,7 +50,7 @@ public class ProductServiceImpl implements ProductService {
         return productList;
     }
 
-    private Map<String, Product> getProductHashMap(){
+    private Map<String, Product> getProductHashMap() {
         return productHashMap;
     }
 
@@ -63,13 +63,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private void validateProducts(List<ProductDTO> products, CurrencyEnum currency) throws PromotionException {
-        for(ProductDTO product:products){
-            if(products.stream().filter(p -> p.getId().equals(product.getId()))
-                    .anyMatch(p -> !p.getName().equals(product.getName()) || p.getPrice()!=product.getPrice())
-                || (productHashMap.containsKey(product.getId())
+        for (ProductDTO product : products) {
+            if (products.stream().filter(p -> p.getId().equals(product.getId()))
+                    .anyMatch(p -> !p.getName().equals(product.getName()) || p.getPrice() != product.getPrice())
+                    || (productHashMap.containsKey(product.getId())
                     && (!product.getName().equals(productHashMap.get(product.getId()).getName())
-                        || product.getPrice() != productHashMap.get(product.getId()).getPrice()
-                        || !currency.toString().equals(productsConfiguration.getCurrency())))){
+                    || product.getPrice() != productHashMap.get(product.getId()).getPrice()
+                    || !currency.toString().equals(productsConfiguration.getCurrency())))) {
                 throw new PromotionException("Products are wrong");
             }
         }

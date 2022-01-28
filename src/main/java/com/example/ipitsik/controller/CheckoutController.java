@@ -39,7 +39,7 @@ public class CheckoutController {
 
     @GetMapping("/byItemsInRequest")
     public ResponseEntity<ReceiptDTO> checkoutShoppingCartByItemsInRequest(@RequestParam(value = "items") List<String> items,
-                                                                             @RequestParam(value = "toCurrency") CurrencyEnum toCurrency)
+                                                                           @RequestParam(value = "toCurrency") CurrencyEnum toCurrency)
             throws PromotionException, ExchangeException, URISyntaxException {
         return ResponseEntity.ok(checkoutService.checkoutShoppingCartListItems(items, toCurrency));
     }

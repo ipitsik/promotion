@@ -1,8 +1,8 @@
 package com.example.ipitsik.exception;
 
-public class PromotionException extends Exception{
+public class PromotionException extends Exception {
 
-    public PromotionException(String errorMessage){
+    public PromotionException(String errorMessage) {
         super(errorMessage);
     }
 }

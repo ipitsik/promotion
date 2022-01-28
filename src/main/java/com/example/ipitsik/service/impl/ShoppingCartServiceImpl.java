@@ -20,33 +20,37 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             shoppingCart.setCartItems(new ArrayList<>());
         } else if (this.containsProduct(shoppingCart, product)) {
             shoppingCart.getCartItems()
-                .stream()
-                .filter(c -> c.getProduct().equals(product))
-                .findFirst()
-                .ifPresent(c -> c.setQuantity(c.getQuantity() + 1));
+                    .stream()
+                    .filter(c -> c.getProduct().equals(product))
+                    .findFirst()
+                    .ifPresent(c -> c.setQuantity(c.getQuantity() + 1));
             return;
         }
-        shoppingCart.getCartItems().add(new CartItem(product.getPrice(),  1, product));
+        shoppingCart.getCartItems().add(new CartItem(product.getPrice(), 1, product));
     }
 
     @Override
-    public void initializeShoppingCartPrice(ShoppingCart shoppingCart){
-        shoppingCart.getCartItems().forEach(c -> shoppingCart.setInitialPrice(shoppingCart.getInitialPrice()
-                + c.getProduct().getPrice() * c.getQuantity()));
-    }
-
-    @Override
-    public void finalizeShoppingCart(ShoppingCart shoppingCart){
-        double finalCost = shoppingCart.getCartItems().stream().mapToDouble(c -> c.getFinalPrice() * c.getQuantity()).sum();
-
-        if(shoppingCart.getTotalDiscount() > 0){
-            finalCost -= finalCost * shoppingCart.getTotalDiscount() * Constants.PERCENTAGE_MULTIPLE;
+    public void initializeShoppingCartPrice(ShoppingCart shoppingCart) {
+        if (shoppingCart.getCartItems() != null) {
+            shoppingCart.getCartItems().forEach(c -> shoppingCart.setInitialPrice(shoppingCart.getInitialPrice()
+                    + c.getProduct().getPrice() * c.getQuantity()));
         }
-
-        shoppingCart.setFinalPrice(finalCost);
     }
 
-    private boolean containsProduct(ShoppingCart shoppingCart, Product product){
+    @Override
+    public void finalizeShoppingCart(ShoppingCart shoppingCart) {
+        if (shoppingCart.getCartItems() != null) {
+            double finalCost = shoppingCart.getCartItems().stream().mapToDouble(c -> c.getFinalPrice() * c.getQuantity()).sum();
+
+            if (shoppingCart.getTotalDiscount() > 0) {
+                finalCost -= finalCost * shoppingCart.getTotalDiscount() * Constants.PERCENTAGE_MULTIPLE;
+            }
+
+            shoppingCart.setFinalPrice(finalCost);
+        }
+    }
+
+    private boolean containsProduct(ShoppingCart shoppingCart, Product product) {
         return shoppingCart.getCartItems()
                 .stream()
                 .map(CartItem::getProduct)
